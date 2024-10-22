@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js"
   },
-  "author": "Your Name",
+  "author": "admin",
   "license": "ISC",
   "dependencies": {
     "http": "^0.0.1"
