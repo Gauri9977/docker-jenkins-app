@@ -2,22 +2,22 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'  // Docker Hub credentials ID
-        DOCKER_IMAGE = "gauri9903/simple-node-app"   
-        GIT_REPO = "https://github.com/Gauri9977/docker-jenkins-app.git" 
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
+        DOCKER_IMAGE = 'gauri9903/simple-node-app:9'
     }
 
     stages {
         stage('Clone Git Repo') {
             steps {
-                git url: "${GIT_REPO}", branch: 'main'
+                git branch: 'main',
+                    url: 'https://github.com/Gauri9977/docker-jenkins-app.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("${DOCKER_IMAGE}:${env.BUILD_ID}")
+                    docker.build("${DOCKER_IMAGE}")
                 }
             }
         }
@@ -25,23 +25,16 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_CREDENTIALS_ID}") {
-                        dockerImage.push("${env.BUILD_ID}")
-                        dockerImage.push("latest")
+                    docker.withRegistry('https://index.docker.io/v1/', "${DOCKERHUB_CREDENTIALS}") {
+                        docker.image("${DOCKER_IMAGE}").push()
                     }
                 }
-            }
-        }
-
-        stage('Cleanup') {
-            steps {
-                sh "docker rmi ${DOCKER_IMAGE}:${env.BUILD_ID}"
             }
         }
     }
 
     post {
-        always {
+        cleanup {
             cleanWs()
         }
     }
