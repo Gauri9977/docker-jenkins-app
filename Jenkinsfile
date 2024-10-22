@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'  // Your Docker Hub credentials ID
-        DOCKER_IMAGE = "gauriphatate00@gmail.com/simple-node-app" // Docker Hub image name
-        GIT_REPO = "https://github.com/Gauri9977/docker-jenkins-app.git"  // Your GitHub repo URL
+        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'  // Docker Hub credentials ID
+        DOCKER_IMAGE = "gauri9903/simple-node-app"   
+        GIT_REPO = "https://github.com/Gauri9977/docker-jenkins-app.git" 
     }
 
     stages {
